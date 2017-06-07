@@ -1,6 +1,7 @@
 package org.alpacology.vaadindemo.timelog;
 
 
+import com.vaadin.spring.annotation.SpringComponent;
 import org.alpacology.vaadindemo.category.CategoryService;
 import org.alpacology.vaadindemo.project.ProjectService;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@SpringComponent
 public class TimelogEntryService {
 
 
@@ -37,6 +39,16 @@ public class TimelogEntryService {
                         .day(LocalDate.now().minusDays(2))
                         .hourCount(1.0)
                         .project(projectService.getProjects().get(2))
+                        .build()
+        );
+        entries.put(
+                7,
+                TimelogEntry.builder()
+                        .id(7)
+                        .category(categoryService.getCategories().get(0))
+                        .day(LocalDate.now().minusDays(3))
+                        .hourCount(4.5)
+                        .project(projectService.getProjects().get(3))
                         .build()
         );
     }
