@@ -18,9 +18,16 @@ public class TimelogUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         this.setSizeFull();
 
-        Grid<TimelogEntry> grid = new Grid<>(TimelogEntry.class);
+        Grid<TimelogEntry> grid = new Grid<>();
         grid.setItems(timelogEntryService.getTimelogEntriesAsList());
-        grid.setColumns("hourCount", "day", "project", "category");
+        grid.addColumn(TimelogEntry::getHourCount)
+                .setCaption("Hours spent");
+        grid.addColumn(TimelogEntry::getDay)
+                .setCaption("When");
+        grid.addColumn(entry -> entry.getProject().getName())
+                .setCaption("Project");
+        grid.addColumn(entry -> entry.getCategory().getName())
+                .setCaption("Task category");
         grid.setSizeFull();
 
         setContent(grid);
