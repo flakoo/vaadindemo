@@ -18,7 +18,7 @@ public class TimelogGrid extends Grid<TimelogEntry> {
 
     @PostConstruct
     public void initGrid() {
-        setItems(timelogEntryService.getTimelogEntriesAsList());
+        updateList();
 
         addColumn(TimelogEntry::getHourCount)
                 .setCaption("Hours spent");
@@ -30,5 +30,9 @@ public class TimelogGrid extends Grid<TimelogEntry> {
                 .setCaption("Task category");
 
         setSizeFull();
+    }
+
+    public void updateList() {
+        setItems(timelogEntryService.getTimelogEntriesAsList());
     }
 }

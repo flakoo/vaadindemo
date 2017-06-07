@@ -1,9 +1,10 @@
 package org.alpacology.vaadindemo;
 
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.*;
 import org.alpacology.vaadindemo.timelog.TimelogEntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +12,7 @@ import javax.annotation.PostConstruct;
 
 @SpringComponent
 @UIScope
-public class TimelogLayout extends HorizontalLayout {
+public class TimelogLayout extends HorizontalLayout implements View {
 
     @Autowired
     private TimelogGrid timelogGrid;
@@ -22,10 +23,27 @@ public class TimelogLayout extends HorizontalLayout {
     @PostConstruct
     public void init() {
         addComponent(timelogGrid);
-        addComponent(
-                new Label("Total hours spent: " + timelogEntryService.getTotalSpentTime())
-        );
+        addComponent(getSummaryLayout());
 
         setSizeFull();
+    }
+
+    private VerticalLayout getSummaryLayout() {
+        VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.addComponents(new Label("Total hours spent: " + timelogEntryService.getTotalSpentTime()));
+        verticalLayout.addComponents(configureCreateButton());
+        return verticalLayout;
+    }
+
+    private Button configureCreateButton() {
+        Button button = new Button("Add entry");
+        button.addClickListener(event -> UI.getCurrent().getNavigator().navigateTo("add"));
+
+        return button;
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+        timelogGrid.updateList();
     }
 }
