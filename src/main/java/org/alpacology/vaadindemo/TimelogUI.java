@@ -12,25 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TimelogUI extends UI {
 
     @Autowired
-    private TimelogEntryService timelogEntryService;
+    private TimelogGrid timelogGrid;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         this.setSizeFull();
 
-        Grid<TimelogEntry> grid = new Grid<>();
-        grid.setItems(timelogEntryService.getTimelogEntriesAsList());
-        grid.addColumn(TimelogEntry::getHourCount)
-                .setCaption("Hours spent");
-        grid.addColumn(TimelogEntry::getDay)
-                .setCaption("When");
-        grid.addColumn(entry -> entry.getProject().getName())
-                .setCaption("Project");
-        grid.addColumn(entry -> entry.getCategory().getName())
-                .setCaption("Task category");
-        grid.setSizeFull();
-
-        setContent(grid);
+        setContent(timelogGrid);
     }
-
 }
