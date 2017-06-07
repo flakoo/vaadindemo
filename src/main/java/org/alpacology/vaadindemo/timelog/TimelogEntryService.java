@@ -57,6 +57,12 @@ public class TimelogEntryService {
         return entries.values().stream().collect(Collectors.toList());
     }
 
+    public Double getTotalSpentTime() {
+        return entries.values().stream()
+                .map(entry -> entry.getHourCount())
+                .reduce(0.0, Double::sum);
+    }
+
     public void saveTimelogEntry(TimelogEntry timelogEntry) {
         if (timelogEntry.getId() == null) {
             timelogEntry.setId(new Random().nextInt() + 100);
